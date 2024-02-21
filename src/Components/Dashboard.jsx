@@ -8,28 +8,49 @@ const Dashboard = () => {
   const [tokenMatch, setTokenMatch] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    
-    axios.post('http://localhost:8000/verifyToken', { token })
-      .then(response => {
-        if (token === response.data.token) {
-          console.log(token);
-          setLoading(false);
-          setTokenMatch(true);
-        } else {
-          console.log("Token doesn't match");
+    const checkToken = () => {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        setLoading(false);
+        navigate('/');
+      }
+
+      axios.post('http://localhost:8000/verifyToken', { token })
+        .then(response => {
+        
+            if (token === response.data.token) {
+              setLoading(false);
+              setTokenMatch(true);
+            } else {
+              console.log("Token doesn't match");
+              setLoading(true);
+              setTokenMatch(false);
+            }
+          
+        })
+        .catch(error => {
+          console.error('Error verifying token:', error);
           setLoading(false);
           setTokenMatch(false);
-        }
-      })
-      .catch(error => {
-        console.error('Error verifying token:', error);
+          navigate('/');
+        });
+    };
+
+
+    const timeout = setTimeout(() => {
+      if (loading) {
         setLoading(false);
-        setTokenMatch(false);
         navigate('/');
-        alert("Error verifying token. Redirecting to login page.");
-      });
-  }, [navigate]);
+      }
+    }, 3000); 
+
+    const interval = setInterval(checkToken, 2000);
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timeout);
+    };
+
+  }, [navigate, loading]);
 
   if (loading) {
     return <div>Loading...</div>;
