@@ -21,7 +21,7 @@ const Signik = () => {
     onSubmit: (values) => {
       console.log(values);
       axios.post(URL, values);
-      navigate("/login");
+      navigate("/");
     },
   });
   return (
@@ -60,7 +60,7 @@ const Signik = () => {
           value={values.password}
         />
         <span>{errors.password}</span>
-        <button type="submit" className="bg-danger text-danger">
+        <button type="submit" classNameName="bg-danger text-danger">
           signup
         </button>
       </form>

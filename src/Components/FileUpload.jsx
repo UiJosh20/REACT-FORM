@@ -11,6 +11,7 @@ const FileUpload = () => {
     let reader = new FileReader()
     let myImage = e.target.files[0]
     reader.readAsDataURL(myImage)
+   
     reader.onload = () =>{
       setMyFile(reader.result)
     }
@@ -27,7 +28,7 @@ const FileUpload = () => {
   return (
     <div>
       <input type="file" name="" id="" onChange={(e)=>changeFile(e)}/>
-      <button className="" onClick={uploadIt}>Upload file</button>
+      <button classNameName="" onClick={uploadIt}>Upload file</button>
 
 
       <img src={data.storedImage} alt="" />
